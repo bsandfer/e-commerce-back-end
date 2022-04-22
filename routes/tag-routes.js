@@ -6,6 +6,13 @@ const { Tag, Product, ProductTag } = require('../models')
 router.get('/tags', (req, res) => {
   // find all tags
   // be sure to include its associated Product data
+  Tag.findAll({include: [Product]})
+  .then(tags=> {
+    res.json(tags)
+  })
+  .catch(err => {
+    console.log(err)
+  })
 })
 
 router.get('/tags/:id', (req, res) => {
@@ -23,6 +30,13 @@ router.put('/tags/:id', (req, res) => {
 
 router.delete('/tags/:id', (req, res) => {
   // delete on tag by its `id` value
+  Tag.destroy({where: {id: req.params.id}})
+  .then(tag=> {
+    res.sendStatus(200)
+  })
+  .catch(err => {
+    console.log(err)
+  })
 })
 
 module.exports = router
